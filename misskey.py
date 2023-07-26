@@ -8,7 +8,8 @@ def download_favorite_images(instance_url, user_token, download_path):
     images = get_my_reaction_image(instance_url, id)
     for img in images:
         for file in img['note']['files']:
-            print(file['url'])
+            url = file['url']
+            download_url(url, download_path, os.path.basename(url))
     
 def get_my_reaction_image(instance_url, id):
     # Misskey APIエンドポイント
@@ -45,12 +46,15 @@ def download_url(url, download_path, filename):
 
 if __name__ == "__main__":
     # MisskeyインスタンスのURLとユーザートークンを指定
-    instance_url = "https://submarin.online"
+    instance_url = "https://misskey.io"
     # 設定 > API > アクセストークンの発行
     access_token = ""
 
     # ダウンロード先のフォルダーを指定
     download_path = "./favorite_images"
+    
+    if not os.path.exists(download_path):
+        os.mkdir(download_path)
 
     # ダウンロード実行
     download_favorite_images(instance_url, access_token, download_path)
